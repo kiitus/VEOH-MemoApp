@@ -1,0 +1,5 @@
+reporicory
+clone or copy, kopio  linkistä
+sijainti kansio
+
+git clone "polku"
