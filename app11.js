@@ -16,7 +16,8 @@ const server = http.createServer((req,res)=>{
         res.write(`
         <html>
         <head><title>MemoApp</title>
-        <meta http-equiv="Content-Type",content="text/html;charset=UTF-8"></head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="style.css"></head>
         <body>`);
 
 
@@ -24,7 +25,7 @@ const server = http.createServer((req,res)=>{
             res.write(`<div>note:${value},index: ${index}`);
             res.write(`<form action="delete-note" method = "POST">
             <input type="hidden" name="index"value="${index}">
-            <button type="submit">Delete</button>
+            <button type="submit" class="delete_button">Delete</button>
             </form><div>`);
             
         
@@ -33,7 +34,7 @@ const server = http.createServer((req,res)=>{
 
          res.write(`   <form action="add-note" method = "POST">
             <input type="text" name="note">
-                <button type="submit">Add note</button>
+                <button type="submit" class="add_button">Add note</button>
             </form>
         </body>
         </html>
@@ -54,8 +55,8 @@ const server = http.createServer((req,res)=>{
 
         req.on('end',()=>{
             const body = Buffer.concat(chunks).toString();
-            const decoded_body = decodeURIComponent(body);
-            const note = decoded_body.split('=')[1];  //Note=viesi
+            const decoded_body = decodeURIComponent(body);  //EI TOIMI   tekee ääkkösistä toimivat
+            const note = decoded_body.split('=')[1];  //Note=viesi   
            notes.push(note);
           //  console.log(body);
             res.setHeader('Location','/');
@@ -90,6 +91,15 @@ const server = http.createServer((req,res)=>{
     else if(url === `/favicon.ico`)
     {
         fs.readFile('./favicon.ico', (err,data)=>
+        {
+            res.write(data);
+            res.end();
+        });
+        return;
+    }
+    else if(url === `/style.css`)
+    {
+        fs.readFile('./style.css', (err,data)=>
         {
             res.write(data);
             res.end();
